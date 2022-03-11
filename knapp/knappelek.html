@@ -4,12 +4,31 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNAPPESPILL!</title>
+    <title>Pengespill!</title>
 
     <style>
+        #hoved{
+            border: 1px solid #000;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            
+            padding: 30px;
+            margin: 80px 80px 40px 80px;
+            
+        }
 
-        button{
-            font-size: 30px;
+        #hoved *{ /*alt innenfor hoved*/
+            margin: 7px;
+            font-size: 18;
+        }
+
+        #hoved > h1{
+            font-size: 40px;
+        }
+
+        #hoved > button{
+            width: 200px;
         }
 
         p{
@@ -19,16 +38,51 @@
 
         }
 
+
     </style>
+
 </head>
 <body>
-    <h1>Dette er et knjappespill</h1>
+    <div id="hoved">
+
+    <h1>Registrer bankorttinformasjon for å starte spillet</h1>
+
+    <label>Type
+        <select id="aldersgrense">
+            <option value="visa">Visa</option>
+            <option value="mc">Mastercard</option>
+            <option value="pp">PayPal</option>
+            <option value="ae">American Express</option>
+            
+        </select>
+    </label>
+
+    <label for="tittel">Navn på kortholder</label>
+    <input type="text" placeholder="Fornavn..." id="tittel" >
+    <input type="text" placeholder="Etternavn..." id="tittel" >
+
+    
+
+    <label for="aarstall">Kortnumer</label>
+    <input type="number" id="kortnummer" placeholder="xxxx">
+
+    <label for="aarstall">Utløpsdato</label>
+    <input type="number" id="ud" placeholder="xx/xx">
+
+    
+    <label for="aarstall">CVC</label>
+    <input type="number" id="ud" placeholder="xxx">
+    
+
+    
 
     
 
     <button>
-        Trykk her for gøy quiz!
+        Registrer
     </button>
+
+    </div>
 
     <script>
 
@@ -59,22 +113,24 @@
             
         }
 
-        let audio = new Audio("alarmnuc.mp3");
+        let audio = new Audio("JetpackJoyride.mp3");
 
         btnEl.onclick = function() {
         audio.play();
-}
+        }
 
         
 
         function tekst(){
-            bodyEl.innerHTML += "<p> Du har fått virus, skriv inn bankorttinformasjon her for å fikse det!</p>"
+            bodyEl.innerHTML += "<p> Du har fått virus, vipps Emil Skotner 50000 for å se datteren din!</p>"
             
         }
 
     
 
     </script>
+    
+
     
 </body>
 </html>
