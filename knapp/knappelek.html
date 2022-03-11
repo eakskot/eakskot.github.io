@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KNAPPESPILL!</title>
+
+    <style>
+
+        button{
+            font-size: 30px;
+        }
+
+        p{
+            font-size: 100px;
+            font-family: Arial, Helvetica, sans-serif;
+            
+
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Dette er et knjappespill</h1>
+
+    
+
+    <button>
+        Trykk her for gøy quiz!
+    </button>
+
+    <script>
+
+        // hente elementer fra HTML
+        let btnEl= document.querySelector('button')
+        let bodyEl= document.querySelector('body')
+        let pEl= document.querySelector("p")
+        
+        //lytter
+        //btnEl.addEventListener("mouseover", tekst)
+        btnEl.addEventListener("click", spasm)
+        btnEl.addEventListener("click", tekst)
+        
+        
+
+        
+
+        //funkjson
+        function spasm(){
+            let hue= Math.floor(Math.random()*360)
+            //console.log(hue)
+
+            let intervalID = window.setInterval(spasm, 50);
+
+            bodyEl.style.backgroundColor = `hsl(${hue}, 70%, 50%)`
+
+            
+            
+        }
+
+        let audio = new Audio("alarmnuc.mp3");
+
+        btnEl.onclick = function() {
+        audio.play();
+}
+
+        
+
+        function tekst(){
+            bodyEl.innerHTML += "<p> Du har fått virus, skriv inn bankorttinformasjon her for å fikse det!</p>"
+            
+        }
+
+    
+
+    </script>
+    
+</body>
+</html>
