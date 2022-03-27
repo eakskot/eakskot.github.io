@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worm</title>
+
+    <style>
+
+        html{
+            background-color: #70594a;
+        }
+
+        #snakeboard{ /*plassering av canvas*/
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%); /*brukes pga 2d, flytter canvas (x,y) retning*/
+        }
+
+        #tekst{
+            color: #fff;
+            text-align: center;
+            margin-top: 130px;
+            font-family: Arial, Helvetica, sans-serif;
+            
+        }
+
+        #tekst2{
+            color: #fff;
+            text-align: center;
+            margin-top: 130px;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: smaller;
+            
+        }
+
+        #score{
+            text-align: center;
+            margin-top: 400px;
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="snakeboard" width="400" height="400"></canvas>
+    <h1 id="tekst">Worm</h1>
+    <h1 id="tekst2">PRESS THE SPACEBAR TO START THE GAME</h1>
+
+    <h1 id="score">Score: </h1>
+    
+    
+
+
+<script>
+
+
+    
+    
+    
+    let snake = [
+        {x: 200, y: 200}, {x: 180, y: 200}, {x: 160, y: 200}, {x: 140, y: 200}] //array med koordintare hvor snaken er i starten, 20px store "deler"
+
+        let dx=20 //horisontal hastighet
+        let dy=0 //skal ikke flytte slangen oppover eller nedover automatisk
+        
+        let food_x //definerer...
+        let food_y
+
+        let score=0
+
+        
+
+    const snakeboard=document.getElementById("snakeboard") //henter canvas-elementet (const er det samme som 'let' bare at det er konstant)
+    const snakeboard_ctx=snakeboard.getContext("2d") //sier at spillet er i 2D, ctx= context
+
+    
+
+    document.addEventListener("keydown", change_direction) //sier at to funksoner skal "lytte" etter keydowns
+
+    document.addEventListener("keydown", start_game)
+
+    function start_game(e){
+        
+        const SPACE= 32
+
+        const keyPressed= e.keyCode; //hvis bruker trykker på space, kalles main og spillet starter
+        if (keyPressed== SPACE){ 
+            main();
+        }
+    }
+    
+    
+    genfood();
+
+    
+    
+    // main får spillet til å fortsette å runne kontinuerlig
+    function main() {  
+        if (game_has_ended())
+        return; //kaller ikke resten av funksjonene hvis game_has_ended er TRUE
+
+        change_direction=false;
+        setTimeout(function onTick(){ //hver funksjon skjer med en timeout/ "pause"
+        clearCanvas();
+        drawFood();
+        movesnake();
+        drawSnake();
+        
+        main();},150); // kaller main igjen, 150 millisekunder "pause"
+    
+    }
+    
+
+
+    
+    
+
+    function clearCanvas(){ //tegner en border rundt canvas
+        snakeboard_ctx.fillStyle = "#c1865d" //fargen til canvas
+        snakeboard_ctx.strokestyle = "black" //fargen til border til canvas
+        snakeboard_ctx.fillRect(0, 0, snakeboard.width, snakeboard.height);//tegner et rektangel over hele canvas 
+        snakeboard_ctx.strokeRect(0, 0, snakeboard.width, snakeboard.height);//tegner en border rundt hele canvas
+        
+
+    }
+
+    function drawSnake() {//tegner snaken på canvaset
+        snake.forEach(drawSnakePart)// tegner hver snakepart
+
+    }
+
+    
+    
+
+    function drawSnakePart(snakePart){ //tegner en snakepart
+        snakeboard_ctx.fillStyle = "#f98";  //fargen til snakeparten
+        snakeboard_ctx.strokestyle = "darkblue"; //borderfarge til snakeparten
+        snakeboard_ctx.fillRect(snakePart.x, snakePart.y, 20, 20) //tegner firkanten soom er snakeparten til snake-koordinatene (20px)
+        snakeboard_ctx.strokeRect(snakePart.x, snakePart.y, 20, 20) //tegner bakgrunnsfargen til borderen(outline) rundt snakepart
+
+ 
+    }
+
+    function drawFood(){ //samme som drawSnakePart funksjonen, bare med andre farger
+        snakeboard_ctx.fillStyle= "#a42015"
+        snakeboard_ctx.strokestyle= "#567"
+        snakeboard_ctx.fillRect(food_x,food_y, 20, 20)
+        snakeboard_ctx.strokeRect(food_x,food_y, 20, 20)
+    }
+
+
+    function random_food(min,max){
+        return Math.floor((Math.random() * (max+1) ) / 20) * 20; //får et random tall fra 0-400 med inervaller på 20 for å kunne plassere mat tilfeldig men bare hvor slangen kan gå
+    }
+    function genfood(){
+        food_x= random_food(0,snakeboard.width-20)// random tall fra 0-400 med inervaller på 20 til både x og y plasseringen av maten
+        food_y= random_food(0,snakeboard.height-20)
+        snake.forEach(function has_snake_eaten_food(snakepart){
+            const has_eaten= snakepart.x==food_x && snakepart.y==food_y //hvis maten er der noen deler av slangen er, generer en ny matbit et annet sted
+            if(has_eaten){
+                genfood();
+                
+            }
+        })
+
+    }
+
+        
+    
+
+    function change_direction(e){ //finner keycodes på https://keycode.info/for/Space
+        const LEFT_KEY= 37
+        const RIGHT_KEY= 39
+        const UP_KEY= 38
+        const DOWN_KEY= 40
+
+        const keyPressed= e.keyCode;
+        const up= (dy== -20)
+        const down= (dy==20)
+        const right= (dx==20)
+        const left= (dx==-20)
+
+        if (keyPressed== LEFT_KEY && !right){ //hvis du ikke går mot høyre og trykker venstre key
+            dx=-20
+            dy=0
+            
+        }
+        if (keyPressed== RIGHT_KEY && !left){ //hvis du ikke går mot venstre og trykker høyre key
+            dx=20
+            dy=0
+        }
+        if (keyPressed== UP_KEY && !down){ //hvis du ikke går ned og trykker opp key
+            dx=0
+            dy=-20
+        }
+        if (keyPressed== DOWN_KEY && !up){ //hvis du ikke går opp og trykker ned key
+            dx=0
+            dy=20
+            
+        }
+        
+
+
+
+    }
+
+    
+
+    function game_has_ended(){
+        for (let i = 4; i < snake.length; i++){ //starter med i=4 pga det er så lang slangen er i starten, sjekker hvor alle lengder av slangen
+       
+        const has_collided = snake[0].x === snake[i].x && snake[0].y === snake[i].y //sjekker om hodet har kollidert med deler av resten av kroppen
+        if (has_collided)
+            return true //returnerer true hvis spillet er ferdig og false hvis ikke
+            
+    }
+        
+        const hitLeftWall= snake[0].x < 0 //mindre en x-posisjon 0 som er på kanten av venstre siden av brettet
+        const hitRightWall = snake[0].x > snakeboard.width - 20; //snakeboard widthen er 400, hvis hode.x er større enn 380 px har den alstå truffet høyre siden av kanten (400px)
+        const hitTopWall= snake[0].y < 0 //mindre en y-posisjon 0 som er på kanten av toppen siden av brettet (x-akse er på toppen)
+        const hitBottomWall = snake[0].y > snakeboard.height - 20; //snakeboard heighten er 400, hvis hode.y er større enn 380 px har den alstå truffet bunnen av brettet
+        
+        return hitRightWall ||  hitLeftWall || hitTopWall || hitBottomWall
+
+        
+
+    }
+
+    
+    let scoreEl = document.getElementById('score');
+
+    function movesnake(){
+        const head= {x: snake[0].x+dx, y:snake[0].y+dy} //lager et nytt slangehode (dx = +20px til å starte med (rett fram til høyre), endringer i dx og dy vil gi slangen bevegelse). 
+        snake.unshift(head) //legger til det nye hodet i starten av arrayet
+        
+        const has_eaten_food = snake[0].x ==food_x && snake[0].y === food_y;
+        if(has_eaten_food){
+            genfood() 
+
+            
+            score+=1 //får +1 i score hver gang slanger spiser en matbit
+            scoreEl.innerHTML = `Score: ${score}`
+
+
+            let audio = new Audio("biting_sound.mp3");
+                audio.play(); 
+            
+        }
+
+        else{
+            snake.pop() //fjerner siste element i arrayet, dvs siste bit av slangen, hvis ikke hodet er på samme plassering som en matbit (dette gjør at slangen vokser)
+
+        }
+    }
+    
+    
+    
+    
+
+
+</script>
+</body>
+</html>
