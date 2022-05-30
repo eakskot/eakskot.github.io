@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flaggspill</title>
+
+    <style>
+        #nybruker {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 20px auto;
+            padding: 10px;
+            font-size: 20px;
+        }
+
+        #nybruker>label,
+        input,
+        #button {
+            margin: 7px;
+
+        }
+
+        * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #FFFFFF
+        }
+
+
+        @import url('https://fonts.googleapis.com/css2?family=Quicksand&family=Roboto&display=swap');
+
+
+        h1,
+        h2 {
+            text-align: center;
+            font-size: 200%;
+            color: #809A6F;
+        }
+
+        h3 {
+            text-align: center;
+            font-size: 150%;
+            color: #A25B5B;
+        }
+
+        .t {
+            grid-area: t;
+
+        }
+
+        .bl {
+            grid-area: bl;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: auto;
+        }
+
+
+
+
+        #board {
+            border: 1px solid #000;
+            display: grid;
+            width: 95%;
+            max-width: 400px;
+            margin: auto;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(4, 120px);
+
+            grid-template-areas:
+                "t t"
+                "t t"
+                "bl bl"
+                "bl bl"
+
+
+            ;
+            font-size: 60px;
+
+
+        }
+
+        #board>div {
+            border: 1px solid #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .bl>.alt {
+            font-size: 50%;
+            margin: auto;
+            border: 1px solid black;
+            display: flex;
+            justify-content: space-evenly;
+            padding: 1%;
+            cursor: pointer;
+
+
+
+        }
+
+    
+
+
+        #start {
+            width: 60%;
+            height: 60%;
+            font-size: 75%;
+            background-color: #CC9C75;
+            border: none;
+        }
+
+        #start:hover {
+            cursor: pointer;
+            border: 2px solid #000;
+        }
+
+        #nesteknapp {
+
+
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 3%;
+
+
+        }
+
+        #next {
+
+
+
+
+            width: 30%;
+            border: none;
+            background-color: #D5D8B5;
+            padding: 14px 28px;
+            font-size: 20px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #next:hover {
+            color: #fff;
+        }
+
+        #p1 {
+            font-size: 60%;
+        }
+
+        #nyrunde {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #000;
+            background-color: #CC9C75;
+            font-size: 150%;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1> Kan du gjette flagget?</h1>
+    
+    <div id="board">
+
+        <div class="t"> <button id="start">Start</button> </div>
+
+        <div class="bl">
+
+            <div class="alt" id="one">
+                
+            </div>
+
+            <div class="alt" id="two">
+                
+            </div>
+
+            <div class="alt" id="three">
+               
+            </div>
+
+            <div class="alt" id="four">
+               
+            </div>
+
+        </div>
+
+
+    </div>
+
+   
+
+    <div id="nesteknapp">
+        <button id="next"> Next
+    </div>
+
+
+    <div id="score">
+        <h2>Score: </h2>
+
+    </div>
+
+    <h2>Leaderboard:</h2>
+
+    <div id="nybruker">
+        <label for="fornavn">Navn:</label>
+        <input type="text" id="fornavn" placeholder="Navn">
+
+        <label for="etternavn">Score:</label>
+        <input type="number" id="etternavn" placeholder="Din score">
+
+
+
+
+
+        <button id="button">Registrer</button>
+
+    </div>
+
+    <div id="hoved"></div>
+
+    </div>
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-app.js"></script>
+    <!--tilgang til firebase-->
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.2/firebase-firestore.js"></script>
+    <!--tilgang til firestore-->
+    <script src="script.js"></script>
+
+
+</body>
+
+</html>
